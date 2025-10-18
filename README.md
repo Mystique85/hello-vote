@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Hello Vote
 
-## Getting Started
+Hello Vote is a decentralized voting system (DApp) running on the **Celo** blockchain.  
+It allows users to create polls, vote, and earn rewards in **VOTE** tokens.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ DApp Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 📝 Create polls  
+- 🗳️ Vote in polls  
+- 📊 View poll results  
+- 🎁 Earn rewards as a participant or poll creator  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔗 Contract
 
-## Learn More
+- **Contract Address:** `0xd12B01c658c4B563ACaDfC84997ea8270afdDd64`  
+- **CeloScan:** [View on CeloScan](https://celoscan.io/address/0xd12b01c658c4b563acadfc84997ea8270afddd64#code)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🪙 VOTE Token
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Symbol: **VOTE**  
+- Full Name: **VoteToken**  
+- Decimals: 18  
+- Maximum Supply: 20,000,000,000 VOTE  
+- Reward per vote: 100 VOTE  
+- Creator reward every 10 polls created: 10,000 VOTE  
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📜 Full Overview of HelloVoteV3 Contract
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The **HelloVoteV3.sol** contract implements the **VOTE** token and the poll system logic:
+
+### Polls
+
+- Each poll has a title, creator, creation time, end time, and list of options  
+- Polls last 7 days (`POLL_DURATION`)  
+- Users can create up to 20 polls per day (`MAX_DAILY_POLLS_PER_USER`)  
+- Each poll must have between 2 and 10 options  
+- When a poll ends, a `PollEnded` event is emitted  
+
+### Voting
+
+- Each user can vote only once per poll  
+- Every vote gives the voter `rewardPerVote` tokens  
+- `Voted` event is emitted for each vote  
+
+### Creator Rewards
+
+- Every 10 polls created by a user gives them `CREATOR_REWARD_PER_10` tokens  
+- Rewards are stored in `pendingCreatorRewards` and can be claimed via `claimCreatorReward()`  
+
+### VOTE Token
+
+- Implements standard ERC20 functions: `transfer`, `approve`, `transferFrom`  
+- Maximum supply: `MAX_SUPPLY = 20,000,000,000 VOTE`  
+- Owner can mint tokens manually  
+
+### Administrative Functions
+
+- `pause()` / `unpause()` – pause or resume contract operations  
+- `setRewardPerVote(uint256)` – update vote reward amount  
+- `ownerMint(address, uint256)` – manually mint tokens  
+
+### Events
+
+- `Transfer` and `Approval` – standard ERC20 events  
+- `PollCreated` – poll creation  
+- `PollEnded` – poll ended  
+- `Voted` – vote cast  
+- `CreatorRewardMinted` – creator reward claimed  
+
+---
+
+Hello Vote enables easy poll creation and rewards active participants and poll creators, fully on the Celo blockchain.
