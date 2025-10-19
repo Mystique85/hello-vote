@@ -1,0 +1,6 @@
+.bg-gradient-3d {
+  background: radial-gradient(circle at 20% 30%, #7b2ff7, transparent 60%),
+              radial-gradient(circle at 80% 70%, #f107a3, transparent 60%),
+              linear-gradient(135deg, #1c1c1c, #2d2d2d);
+  background-blend-mode: screen;
+}
