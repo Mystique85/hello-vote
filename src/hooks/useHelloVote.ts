@@ -1,110 +1,68 @@
+// src/hooks/useHelloVote.ts
 import { useState } from "react";
-import { ethers } from "ethers";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/constants";
-import Web3Modal from "web3modal"; // stara wersja 1.9.12
-import WalletConnectProvider from "@walletconnect/web3-provider";
 
-// Celo Mainnet
-const CELO_CHAIN_ID = 42220;
-const CELO_RPC_URL = "https://forno.celo.org";
+interface Poll {
+  title: string;
+  options: string[];
+  votes: number[];
+  ended?: boolean;
+}
 
 export const useHelloVote = () => {
-  const [polls, setPolls] = useState<any[]>([]);
-  const [signer, setSigner] = useState<ethers.Signer | null>(null);
+  const [polls, setPolls] = useState<Poll[]>([
+    {
+      title: "Sample Poll 1",
+      options: ["Option A", "Option B"],
+      votes: [0, 0],
+      ended: false,
+    },
+    {
+      title: "Sample Poll 2",
+      options: ["Yes", "No", "Maybe"],
+      votes: [0, 0, 0],
+      ended: false,
+    },
+  ]);
 
-  // Połączenie portfela
+  // Mock connectWallet: po prostu ustawiamy przykładowy signer
   const connectWallet = async () => {
-    try {
-      const web3Modal = new Web3Modal({
-        cacheProvider: false,
-        providerOptions: {
-          walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-              rpc: { [CELO_CHAIN_ID]: CELO_RPC_URL },
-            },
-          },
-        },
-      });
-
-      // Otwiera popup portfela
-      const connection = await web3Modal.connect();
-
-      // Tworzymy provider i wymuszamy popup
-      const provider = new ethers.providers.Web3Provider(connection, "any");
-      await provider.send("eth_requestAccounts", []);
-
-      const newSigner = provider.getSigner();
-
-      // Sprawdzenie sieci i przełączenie, jeśli potrzebne
-      const network = await provider.getNetwork();
-      if (network.chainId !== CELO_CHAIN_ID) {
-        try {
-          await connection.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x" + CELO_CHAIN_ID.toString(16) }],
-          });
-        } catch (switchError: any) {
-          if (switchError.code === 4902 || switchError.code === -32603) {
-            await connection.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: "0x" + CELO_CHAIN_ID.toString(16),
-                  chainName: "Celo Mainnet",
-                  nativeCurrency: { name: "Celo", symbol: "CELO", decimals: 18 },
-                  rpcUrls: [CELO_RPC_URL],
-                  blockExplorerUrls: ["https://celoscan.io"],
-                },
-              ],
-            });
-          }
-        }
-      }
-
-      setSigner(newSigner);
-      return newSigner;
-    } catch (err: any) {
-      console.error("Błąd połączenia portfela:", err);
-      alert("Nie udało się połączyć portfela: " + err.message);
-      return null;
-    }
+    return { address: "0x1234...abcd" };
   };
 
-  // Pobranie kontraktu
-  const getContract = async () => {
-    if (!signer) throw new Error("Portfel niepodłączony");
-    return new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-  };
-
-  // Ładowanie ankiet
+  // Mock loadPolls: nic nie robi, bo dane są lokalne
   const loadPolls = async () => {
-    const contract = await getContract();
-    const count = await contract.pollCount();
-    const items = [];
-    for (let i = 0; i < count; i++) {
-      const info = await contract.getPollInfo(i);
-      const [options, votes] = await contract.getPollOptionsWithVotes(i);
-      items.push({ title: info[0], ended: info[2], options, votes });
-    }
-    setPolls(items);
+    return polls;
   };
 
-  // Tworzenie ankiety
+  // Mock createPoll: dodaje ankietę do lokalnego stanu
   const createPoll = async (title: string, options: string[]) => {
-    const contract = await getContract();
-    const tx = await contract.createPoll(title, options);
-    await tx.wait();
-    loadPolls();
+    if (!title || options.length < 2) return;
+    const newPoll: Poll = {
+      title,
+      options,
+      votes: new Array(options.length).fill(0),
+      ended: false,
+    };
+    setPolls(prev => [...prev, newPoll]);
   };
 
-  // Głosowanie
+  // Mock vote: zwiększa liczbę głosów lokalnie
   const vote = async (pollId: number, optionIndex: number) => {
-    const contract = await getContract();
-    const tx = await contract.vote(pollId, optionIndex);
-    await tx.wait();
-    loadPolls();
+    setPolls(prev => {
+      const updated = [...prev];
+      if (!updated[pollId].ended) {
+        updated[pollId].votes[optionIndex] += 1;
+      }
+      return updated;
+    });
   };
 
-  return { polls, connectWallet, loadPolls, createPoll, vote, signer };
+  return {
+    polls,
+    connectWallet,
+    loadPolls,
+    createPoll,
+    vote,
+    signer: { address: "0x1234...abcd" }, // mock signer
+  };
 };
