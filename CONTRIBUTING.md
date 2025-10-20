@@ -1,38 +1,38 @@
-# Współpraca przy projekcie Hello Vote
+# Contributing to Hello Vote
 
-Cieszymy się, że chcesz pomóc w rozwijaniu **Hello Vote**! Poniżej znajdziesz wskazówki, jak możesz wnieść swój wkład.
-
----
-
-## Rozpoczęcie pracy
-
-Aby pracować nad projektem lokalnie, należy najpierw sklonować repozytorium i przygotować środowisko z niezbędnymi bibliotekami.  
-
-> Uwaga: Repozytorium nie zawiera wszystkich bibliotek potrzebnych do pełnej integracji z kontraktem smart. Każdy, kto zrobi fork, powinien upewnić się, że posiada wszystkie potrzebne zależności w swoim środowisku.
-
-Po przygotowaniu środowiska można uruchomić projekt lokalnie i testować zmiany.
+We are glad you want to help improve **Hello Vote**! Below are some guidelines on how you can contribute.
 
 ---
 
-## W jaki sposób możesz pomóc
+## Getting Started
 
-- Poprawianie istniejących komponentów frontendu.  
-- Dodawanie nowych funkcji do DApp, np. ulepszonych formularzy, animacji czy integracji z kontraktem.  
-- Dostarczanie gotowych plików lub modułów w pełni integrujących DApp z kontraktem.  
-- Udoskonalanie dokumentacji lub dodawanie przykładów użycia.
+To work on the project locally, you should first clone the repository and install the necessary libraries for your environment.  
 
----
+> Note: The repository does not include all libraries required for full integration with the smart contract. Anyone making a fork should ensure they have the necessary dependencies installed for their own setup.
 
-## Fork i Pull Request
-
-1. Zrób fork repozytorium.  
-2. Utwórz nową gałąź dla swoich zmian.  
-3. Wprowadź poprawki i przetestuj je lokalnie.  
-4. Wyślij pull request do głównego repozytorium.
+Once the environment is ready, you can run the project locally and start testing your changes.
 
 ---
 
-## Uwagi
+## How You Can Help
 
-- Ankiety są **anonimowe**; nie przechowujemy informacji o twórcach ani głosujących.  
-- Zachowuj czytelność kodu i spójność z istniejącym stylem projektu.
+- Fixing issues in existing frontend components.  
+- Adding new features to the DApp, such as improved forms, animations, or contract interactions.  
+- Providing complete files or modules that fully integrate the DApp with the smart contract.  
+- Enhancing documentation or adding usage examples.
+
+---
+
+## Forking and Pull Requests
+
+1. Make a fork of this repository.  
+2. Create a branch for your changes.  
+3. Make your improvements and test them locally.  
+4. Submit a pull request to the main repository.
+
+---
+
+## Notes
+
+- Polls are **anonymous**; we do not store any information about creators or voters.  
+- Keep your code readable and consistent with the existing project style.
